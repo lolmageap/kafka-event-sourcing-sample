@@ -1,6 +1,6 @@
 package com.example.producer.config
 
-import com.example.producer.model.KafkaEvent
+import KafkaConstant.BOOTSTRAP_SERVERS
 import com.fasterxml.jackson.databind.JsonSerializer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.springframework.context.annotation.Bean
@@ -12,7 +12,7 @@ import org.springframework.kafka.core.ProducerFactory
 @Configuration
 class KafkaProducerConfig {
     @Bean
-    fun kafkaProducerFactory(): ProducerFactory<String, KafkaEvent> =
+    fun kafkaProducerFactory(): ProducerFactory<String, Any> =
         DefaultKafkaProducerFactory(
             mapOf(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to BOOTSTRAP_SERVERS,
@@ -26,11 +26,4 @@ class KafkaProducerConfig {
     @Bean
     fun jsonKafkaTemplate() =
         KafkaTemplate(kafkaProducerFactory())
-
-    companion object {
-        private const val BOOTSTRAP_SERVERS = "localhost:9092"
-        private const val GROUP_ID = "test-group"
-        private const val MY_TOPIC = "my-topic"
-        private const val EARLIEST = "earliest"
-    }
 }
