@@ -1,6 +1,7 @@
 rootProject.name = "kafka-event-sourcing"
 
 include("producer")
-include("consumer")
+include("shipment")
 include("streams")
 include("connector")
+include("common")
