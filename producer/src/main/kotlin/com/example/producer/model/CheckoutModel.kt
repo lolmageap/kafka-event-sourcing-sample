@@ -16,7 +16,7 @@ data class CheckoutEvent private constructor(
     val amount: Long,
     val shippingAddress: String,
     val createdDate: Date,
-) : KafkaEvent() {
+) {
     companion object {
         fun of(
             checkout: Checkout,
