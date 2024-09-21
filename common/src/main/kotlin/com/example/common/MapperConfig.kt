@@ -1,4 +1,4 @@
-package com.example.producer.config
+package com.example.common
 
 import com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
 import com.fasterxml.jackson.databind.ObjectMapper
