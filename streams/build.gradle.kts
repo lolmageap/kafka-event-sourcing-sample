@@ -6,5 +6,9 @@ plugins {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(project(":common"))
+    implementation("org.springframework.kafka:spring-kafka:3.2.3")
+    implementation("org.apache.kafka:kafka-streams:3.8.0")
+    implementation("com.jayway.jsonpath:json-path:2.9.0")
+    testImplementation("org.springframework.kafka:spring-kafka-test:3.2.3")
 }
