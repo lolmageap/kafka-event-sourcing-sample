@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
+import java.time.Instant
 import java.util.*
 
 @Entity
@@ -16,10 +17,10 @@ class Shipment(
     val productId: Long,
     val amount: Long,
     val shippingAddress: String,
-
-    @CreatedDate
-    val createdDate: Date,
 ) {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
+
+    @CreatedDate
+    val createdDate: Date = Date.from(Instant.now())
 }
