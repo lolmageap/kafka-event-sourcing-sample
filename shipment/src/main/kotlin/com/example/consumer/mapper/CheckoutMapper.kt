@@ -8,7 +8,7 @@ object CheckoutMapper {
     fun map(
         source: CheckoutRequest,
         destinationType: KClass<Shipment>,
-        checkoutId: Long,
+        checkoutId: Long = 0L,
     ) = Shipment(
             memberId = source.memberId,
             productId = source.productId,

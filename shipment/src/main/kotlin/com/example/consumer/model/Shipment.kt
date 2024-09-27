@@ -12,7 +12,7 @@ import java.util.*
 @Entity
 @Table(name = "shipment")
 class Shipment(
-    val checkoutId: Long,
+    var checkoutId: Long,
     val memberId: Long,
     val productId: Long,
     val amount: Long,
