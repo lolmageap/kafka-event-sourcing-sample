@@ -1,9 +1,11 @@
 package com.example.producer.component
 
+import com.example.producer.CacheKey.CHECKOUT
 import com.example.producer.model.Checkout
 import com.example.producer.model.CheckoutEvent
 import com.example.producer.model.CheckoutRequest
 import org.modelmapper.ModelMapper
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,6 +14,7 @@ class CheckoutService(
     private val modelMapper: ModelMapper,
     private val kafkaEventSender : KafkaEventSender,
 ) {
+    @Cacheable(CHECKOUT)
     fun save(
         request: CheckoutRequest
     ): Long {

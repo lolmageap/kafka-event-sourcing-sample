@@ -9,3 +9,9 @@ spring:
     generate-unique-name: false
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: none
+  cache:
+    redis:
+      time-to-live: 60000
+      key-prefix: producer
