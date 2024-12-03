@@ -22,8 +22,8 @@ class StreamListener(
         return streamsBuilder.stream<String, String>(INPUT_TOPIC).also {
             it.map { key, value ->
                 KeyValue(
-                    JsonUtil.getProductId(key),
-                    JsonUtil.getAmount(value),
+                    JsonUtil.Product.getProductId(key),
+                    JsonUtil.Product.getAmount(value),
                 )
             }.groupByKey(
                 Grouped.with(
@@ -39,7 +39,7 @@ class StreamListener(
             }.toStream { key, _ ->
                 key.key()
             }.mapValues(
-                JsonUtil::getSendingJson
+                JsonUtil.Product::getSendingJson
             ).selectKey { _, _ ->
                 null
             }.to(
