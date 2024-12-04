@@ -1,7 +1,7 @@
-package com.example.producer.component
+package com.example.store.component
 
-import com.example.producer.model.PurchaseEvent
-import com.example.producer.model.PurchaseRequest
+import com.example.store.model.PurchaseEvent
+import com.example.store.model.PurchaseRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

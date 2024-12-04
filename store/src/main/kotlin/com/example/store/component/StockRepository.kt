@@ -1,6 +1,6 @@
-package com.example.producer.component
+package com.example.store.component
 
-import com.example.producer.model.Stock
+import com.example.store.model.Stock
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface StockRepository: JpaRepository<Stock, Long> {

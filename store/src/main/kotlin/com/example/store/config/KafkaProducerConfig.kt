@@ -1,4 +1,4 @@
-package com.example.producer.config
+package com.example.store.config
 
 import KafkaConstant.BOOTSTRAP_SERVERS
 import com.fasterxml.jackson.databind.JsonSerializer

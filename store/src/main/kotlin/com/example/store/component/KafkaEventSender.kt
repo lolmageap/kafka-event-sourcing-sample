@@ -1,7 +1,7 @@
-package com.example.producer.component
+package com.example.store.component
 
 import KafkaConstant.PURCHASE_ITEM_TOPIC
-import com.example.producer.model.PurchaseEvent
+import com.example.store.model.PurchaseEvent
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
 import org.springframework.kafka.core.KafkaTemplate

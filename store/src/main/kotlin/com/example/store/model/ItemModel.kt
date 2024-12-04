@@ -1,4 +1,4 @@
-package com.example.producer.model
+package com.example.store.model
 
 import java.math.BigDecimal
 import java.util.*
