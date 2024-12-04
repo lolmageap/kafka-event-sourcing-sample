@@ -7,6 +7,13 @@ spring:
       path: /h2-console
   datasource:
     generate-unique-name: false
-
+  data:
+    redis:
+      cluster:
+        nodes: redis://localhost:6379,redis://localhost:6380,redis://localhost:6381,redis://localhost:6382,redis://localhost:6383,redis://localhost:6384
+        max-redirects: 3
+  session:
+    redis:
+      flush-mode: on-save
 server:
   port: 8091

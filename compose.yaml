@@ -21,39 +21,6 @@ services:
         checkout.complete.v1:5:1,
         checkout.aggregate.v1:5:1
 
-  redis:
-    image: 'bitnami/redis:latest'
-    ports:
-      - "6379:6379"
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
-#  elasticsearch:
-#    image: 'docker.elastic.co/elasticsearch/elasticsearch:8.15.1'
-#    environment:
-#      - discovery.type=single-node
-#      - xpack.security.enabled=false
-#      - bootstrap.memory_lock=true
-#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#    volumes:
-#      - es_data:/usr/share/elasticsearch/data
-#    ports:
-#      - "9200:9200"
-#      - "9300:9300"
-
-  kibana:
-    image: 'docker.elastic.co/kibana/kibana:8.15.1'
-    ports:
-      - "5601:5601"
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-
   kafka-connect:
     image: 'confluentinc/cp-kafka-connect:latest'
     ports:
@@ -78,7 +45,7 @@ services:
       - ./kafka-connect-plugins:/etc/kafka-connect/jars
     depends_on:
       - kafka
-      - elasticsearch
+#      - elasticsearch
     command:
       - bash
       - -c
@@ -86,6 +53,85 @@ services:
         confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:11.0.4 && \
         /etc/confluent/docker/run
 
-volumes:
-  es_data:
-    driver: local
+  redis-master-1:
+    container_name: redis-master-1
+    image: arm64v8/redis:latest
+    restart: always
+    volumes:
+      - ./redis/conf/redis-master-1.conf:/etc/redis-master-1.conf
+    command:
+      redis-server /etc/redis-master-1.conf
+    ports:
+      - "7001:7001"
+      - "7002:7002"
+      - "7003:7003"
+      - "7004:7004"
+      - "7005:7005"
+      - "7006:7006"
+
+  redis-master-2:
+    container_name: redis-master-2
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    restart: always
+    volumes:
+      - ./redis/conf/redis-master-2.conf:/etc/redis-master-2.conf
+    command:
+      redis-server /etc/redis-master-2.conf
+
+  redis-master-3:
+    container_name: redis-master-3
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    restart: always
+    volumes:
+      - ./redis/conf/redis-master-3.conf:/etc/redis-master-3.conf
+    command:
+      redis-server /etc/redis-master-3.conf
+
+  redis-replica-1:
+    container_name: redis-replica-1
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    restart: always
+    volumes:
+      - ./redis/conf/redis-replica-1.conf:/etc/redis-replica-1.conf
+    command:
+      redis-server /etc/redis-replica-1.conf
+
+  redis-replica-2:
+    container_name: redis-replica-2
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    restart: always
+    volumes:
+      - ./redis/conf/redis-replica-2.conf:/etc/redis-replica-2.conf
+    command:
+      redis-server /etc/redis-replica-2.conf
+
+  redis-replica-3:
+    container_name: redis-replica-3
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    restart: always
+    volumes:
+      - ./redis/conf/redis-replica-3.conf:/etc/redis-replica-3.conf
+    command:
+      redis-server /etc/redis-replica-3.conf
+
+  redis-cluster-entry:
+    image: arm64v8/redis:latest
+    network_mode: "service:redis-master-1"
+    container_name: redis-cluster-entry
+    command: redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006 --cluster-yes
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+      - redis-replica-1
+      - redis-replica-2
+      - redis-replica-3
+
+networks:
+  default:
+    name: local_network
