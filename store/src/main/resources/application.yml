@@ -1,4 +1,6 @@
 spring:
+  jpa:
+    open-in-view: false
   application:
     name: store
   h2:
@@ -10,7 +12,7 @@ spring:
   data:
     redis:
       cluster:
-        nodes: redis://localhost:6379,redis://localhost:6380,redis://localhost:6381,redis://localhost:6382,redis://localhost:6383,redis://localhost:6384
+        nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
         max-redirects: 3
   session:
     redis:

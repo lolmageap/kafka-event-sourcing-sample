@@ -21,117 +21,84 @@ services:
         checkout.complete.v1:5:1,
         checkout.aggregate.v1:5:1
 
-  kafka-connect:
-    image: 'confluentinc/cp-kafka-connect:latest'
-    ports:
-      - "8083:8083"
+  redis-node-0:
+    image: docker.io/bitnami/redis-cluster:7.4
+    volumes:
+      - redis-cluster_data-0:/bitnami/redis/data
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
-      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
-      CONNECT_GROUP_ID: "quickstart-avro"
-      CONNECT_CONFIG_STORAGE_TOPIC: "docker-connect-configs"
-      CONNECT_OFFSET_STORAGE_TOPIC: "docker-connect-offsets"
-      CONNECT_STATUS_STORAGE_TOPIC: "docker-connect-status"
-      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
-      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
-      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/etc/kafka-connect/jars"
-    volumes:
-      - ./kafka-connect-plugins:/etc/kafka-connect/jars
-    depends_on:
-      - kafka
-#      - elasticsearch
-    command:
-      - bash
-      - -c
-      - |
-        confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:11.0.4 && \
-        /etc/confluent/docker/run
-
-  redis-master-1:
-    container_name: redis-master-1
-    image: arm64v8/redis:latest
-    restart: always
-    volumes:
-      - ./redis/conf/redis-master-1.conf:/etc/redis-master-1.conf
-    command:
-      redis-server /etc/redis-master-1.conf
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
     ports:
-      - "7001:7001"
-      - "7002:7002"
-      - "7003:7003"
-      - "7004:7004"
-      - "7005:7005"
-      - "7006:7006"
+      - "7000:6379"
 
-  redis-master-2:
-    container_name: redis-master-2
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    restart: always
+  redis-node-1:
+    image: docker.io/bitnami/redis-cluster:7.4
     volumes:
-      - ./redis/conf/redis-master-2.conf:/etc/redis-master-2.conf
-    command:
-      redis-server /etc/redis-master-2.conf
+      - redis-cluster_data-1:/bitnami/redis/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+    ports:
+      - "7001:6379"
 
-  redis-master-3:
-    container_name: redis-master-3
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    restart: always
+  redis-node-2:
+    image: docker.io/bitnami/redis-cluster:7.4
     volumes:
-      - ./redis/conf/redis-master-3.conf:/etc/redis-master-3.conf
-    command:
-      redis-server /etc/redis-master-3.conf
+      - redis-cluster_data-2:/bitnami/redis/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+    ports:
+      - "7002:6379"
 
-  redis-replica-1:
-    container_name: redis-replica-1
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    restart: always
+  redis-node-3:
+    image: docker.io/bitnami/redis-cluster:7.4
     volumes:
-      - ./redis/conf/redis-replica-1.conf:/etc/redis-replica-1.conf
-    command:
-      redis-server /etc/redis-replica-1.conf
+      - redis-cluster_data-3:/bitnami/redis/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+    ports:
+      - "7003:6379"
 
-  redis-replica-2:
-    container_name: redis-replica-2
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    restart: always
+  redis-node-4:
+    image: docker.io/bitnami/redis-cluster:7.4
     volumes:
-      - ./redis/conf/redis-replica-2.conf:/etc/redis-replica-2.conf
-    command:
-      redis-server /etc/redis-replica-2.conf
+      - redis-cluster_data-4:/bitnami/redis/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+    ports:
+      - "7004:6379"
 
-  redis-replica-3:
-    container_name: redis-replica-3
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    restart: always
+  redis-node-5:
+    image: docker.io/bitnami/redis-cluster:7.4
     volumes:
-      - ./redis/conf/redis-replica-3.conf:/etc/redis-replica-3.conf
-    command:
-      redis-server /etc/redis-replica-3.conf
-
-  redis-cluster-entry:
-    image: arm64v8/redis:latest
-    network_mode: "service:redis-master-1"
-    container_name: redis-cluster-entry
-    command: redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006 --cluster-yes
+      - redis-cluster_data-5:/bitnami/redis/data
     depends_on:
-      - redis-master-1
-      - redis-master-2
-      - redis-master-3
-      - redis-replica-1
-      - redis-replica-2
-      - redis-replica-3
+      - redis-node-0
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_CLUSTER_REPLICAS=1'
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
+      - 'REDIS_CLUSTER_CREATOR=yes'
+    ports:
+      - "7005:6379"
 
-networks:
-  default:
-    name: local_network
+volumes:
+  redis-cluster_data-0:
+    driver: local
+  redis-cluster_data-1:
+    driver: local
+  redis-cluster_data-2:
+    driver: local
+  redis-cluster_data-3:
+    driver: local
+  redis-cluster_data-4:
+    driver: local
+  redis-cluster_data-5:
+    driver: local
