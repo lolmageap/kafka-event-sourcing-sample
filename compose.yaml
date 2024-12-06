@@ -21,6 +21,48 @@ services:
         checkout.complete.v1:5:1,
         checkout.aggregate.v1:5:1
 
+  master-db:
+    image: mysql:8.0.33
+    container_name: master-db
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --server-id=1
+      - --log-bin=mysql-bin
+      - --binlog-format=row
+      - --gtid-mode=ON
+      - --log-slave-updates=ON
+      - --enforce-gtid-consistency=ON
+    environment:
+      MYSQL_DATABASE: store
+      MYSQL_ROOT_PASSWORD: master-password
+    ports:
+      - "3306:3306"
+
+  slave-db:
+    image: mysql:8.0.33
+    container_name: slave-db
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --server-id=2
+      - --relay-log-index=slave-relay-bin.index
+      - --relay-log=slave-relay-bin
+      - --log-slave-updates=ON
+      - --gtid-mode=ON
+      - --enforce-gtid-consistency=ON
+      - --master-info-repository=TABLE
+      - --relay-log-info-repository=TABLE
+      - --slave-skip-errors=all
+    restart: always
+    environment:
+      MYSQL_DATABASE: store
+      MYSQL_ROOT_PASSWORD: slave-password
+    depends_on:
+      - master-db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./slave-init:/docker-entrypoint-initdb.d
+
   redis-cluster:
     image: grokzen/redis-cluster:7.0.15
     environment:
