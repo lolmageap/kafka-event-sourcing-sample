@@ -16,7 +16,15 @@ dependencies {
     implementation("io.github.oshai:kotlin-logging:5.1.0")
 
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    testAndDevelopmentOnly("org.springframework.boot:spring-boot-docker-compose")
+
     testRuntimeOnly("com.mysql:mysql-connector-j")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-    testImplementation("org.springframework.kafka:spring-kafka-test:3.2.3")
+
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
+    testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
 }
