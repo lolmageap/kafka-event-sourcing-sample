@@ -13,7 +13,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.kafka:spring-kafka:3.2.3")
-    runtimeOnly("com.h2database:h2:2.3.232")
-//    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    implementation("io.github.oshai:kotlin-logging:5.1.0")
+
+    runtimeOnly("com.mysql:mysql-connector-j")
+    testRuntimeOnly("com.mysql:mysql-connector-j")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("org.springframework.kafka:spring-kafka-test:3.2.3")
 }
