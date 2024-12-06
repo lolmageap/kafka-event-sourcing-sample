@@ -9,6 +9,16 @@ spring:
       path: /h2-console
   datasource:
     generate-unique-name: false
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/store
+      username: root
+      password: master-password
+    slave:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3307/store
+      username: root
+      password: slave-password
   data:
     redis:
       cluster:
