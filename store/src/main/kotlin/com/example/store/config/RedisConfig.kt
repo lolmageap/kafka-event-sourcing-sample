@@ -23,7 +23,8 @@ class RedisConfig(
 ) {
     @Bean
     fun connectionFactory(): LettuceConnectionFactory {
-        val clusterConfiguration = RedisClusterConfiguration(redisProperty.nodes)
+        val clusterConfiguration =
+            RedisClusterConfiguration(redisProperty.clusterNodes)
 
         val socketOptions =
             SocketOptions.builder()
@@ -60,18 +61,18 @@ class RedisConfig(
             valueSerializer = GenericJackson2JsonRedisSerializer()
         }
 
-//    @Bean
-//    fun redisCluster(): RedissonClient {
-//        val clusterConfig =
-//            Config().apply {
-//                useClusterServers()
-//                    .addNodeAddress(*redisProperty.nodes.toTypedArray())
-//                    .setScanInterval(2000)
-//                    .setConnectTimeout(500)
-//                    .setTimeout(3000)
-//                    .setRetryAttempts(3)
-//                    .setRetryInterval(1500)
-//            }
-//        return Redisson.create(clusterConfig)
-//    }
+    @Bean
+    fun redisCluster(): RedissonClient {
+        val clusterConfig =
+            Config().apply {
+                useClusterServers()
+                    .addNodeAddress(*redisProperty.nodes.toTypedArray())
+                    .setScanInterval(2000)
+                    .setConnectTimeout(500)
+                    .setTimeout(3000)
+                    .setRetryAttempts(3)
+                    .setRetryInterval(1500)
+            }
+        return Redisson.create(clusterConfig)
+    }
 }

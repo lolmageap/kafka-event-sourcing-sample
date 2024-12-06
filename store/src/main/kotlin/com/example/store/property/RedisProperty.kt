@@ -6,4 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class RedisProperty(
     val nodes: List<String>,
 ) {
+    val clusterNodes: List<String>
+        get() = nodes.map { it.replace("redis://", "") }
 }

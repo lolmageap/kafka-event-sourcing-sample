@@ -12,8 +12,14 @@ spring:
   data:
     redis:
       cluster:
-        nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002,127.0.0.1:7003,127.0.0.1:7004,127.0.0.1:7005
         max-redirects: 3
+        nodes:
+          - redis://localhost:7000
+          - redis://localhost:7001
+          - redis://localhost:7002
+          - redis://localhost:7003
+          - redis://localhost:7004
+          - redis://localhost:7005
   session:
     redis:
       flush-mode: on-save
