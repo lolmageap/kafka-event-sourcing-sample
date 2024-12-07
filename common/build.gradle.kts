@@ -7,4 +7,5 @@ plugins {
 
 dependencies {
     implementation("org.modelmapper:modelmapper:3.2.1")
+    implementation("org.springframework:spring-tx")
 }
