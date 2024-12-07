@@ -1,4 +1,4 @@
-package com.example.store.annotation
+package com.example.common.annotation
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
