@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: batch
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/store
+    username: root
+    password: master-password
+  data:
+    redis:
+      cluster:
+        max-redirects: 3
+        nodes:
+          - redis://localhost:7000
+          - redis://localhost:7001
+          - redis://localhost:7002
+          - redis://localhost:7003
+          - redis://localhost:7004
+          - redis://localhost:7005
+  session:
+    redis:
+      flush-mode: on-save
+server:
+  port: 8099
