@@ -1,4 +1,4 @@
-package com.example.store.property
+package com.example.redis.property
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

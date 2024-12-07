@@ -1,6 +1,6 @@
-package com.example.store.external
+package com.example.redis.component
 
-import com.example.store.exception.RedisLockException
+import com.example.redis.exception.RedisLockException
 import org.redisson.api.RedissonClient
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
@@ -14,7 +14,6 @@ import kotlin.time.toJavaDuration
 class DistributedLock(
     private val redisson: RedissonClient,
 ) {
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun <T> redLock(
         key: String,
         waitTime: Duration = 5000.milliseconds,
@@ -32,7 +31,29 @@ class DistributedLock(
             if (hasLock) block.invoke()
             else throw RedisLockException()
         } finally {
-            lock.unlockAsync()
+            lock.unlock()
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    fun <T> redLockWithTransaction(
+        key: String,
+        waitTime: Duration = 5000.milliseconds,
+        leaseTime: Duration = 1000.milliseconds,
+        block: () -> T,
+    ): T {
+        val lock = redisson.getLock(key)
+        val waitTimeToLong = waitTime.toJavaDuration().toMillis()
+        val leaseTimeToLong = leaseTime.toJavaDuration().toMillis()
+
+        return try {
+            val hasLock =
+                lock.tryLock(waitTimeToLong, leaseTimeToLong, TimeUnit.MILLISECONDS)
+
+            if (hasLock) block.invoke()
+            else throw RedisLockException()
+        } finally {
+            lock.unlock()
         }
     }
 }

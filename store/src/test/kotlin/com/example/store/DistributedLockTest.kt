@@ -1,7 +1,7 @@
 package com.example.store
 
-import com.example.store.exception.RedisLockException
-import com.example.store.external.DistributedLock
+import com.example.redis.exception.RedisLockException
+import com.example.redis.component.DistributedLock
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe

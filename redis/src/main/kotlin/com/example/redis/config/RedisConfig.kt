@@ -1,6 +1,6 @@
-package com.example.store.config
+package com.example.redis.config
 
-import com.example.store.property.RedisProperty
+import com.example.redis.property.RedisProperty
 import io.lettuce.core.SocketOptions
 import io.lettuce.core.cluster.ClusterClientOptions
 import io.lettuce.core.cluster.ClusterTopologyRefreshOptions
