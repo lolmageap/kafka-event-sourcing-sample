@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":redis"))
     implementation("org.redisson:redisson-spring-data-27:3.25.2")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -15,11 +16,11 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka:3.2.3")
     implementation("io.github.oshai:kotlin-logging:5.1.0")
 
-    runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
 
     testAndDevelopmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
-    testRuntimeOnly("com.mysql:mysql-connector-j")
+    testRuntimeOnly("com.mysql:mysql-connector-j:8.0.33")
 
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
