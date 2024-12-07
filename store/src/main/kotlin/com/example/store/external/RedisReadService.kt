@@ -1,26 +1,21 @@
 package com.example.store.external
 
-import org.springframework.data.redis.connection.DataType
-import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
-import org.springframework.scheduling.annotation.EnableScheduling
-import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Component
 
-@EnableScheduling
+@Component
 class RedisReadService(
-    private val stringRedisTemplate: StringRedisTemplate
+    private val redisTemplate: StringRedisTemplate,
 ) {
-    @Scheduled(fixedDelay = 100)
-    fun updateQuantity(
-        prefix: String,
-        limit: Long
-    ) {
-        val scanOptions = ScanOptions.scanOptions()
-            .count(limit)
-            .match("$prefix:*")
-            .type(DataType.STRING)
-            .build()
+    fun getProductStock(
+        memberId: String,
+        productId: String,
+    ): Int {
+        val key = "$PRODUCT_KEY:$memberId:$productId"
+        return redisTemplate.opsForValue().get(key)?.toInt() ?: 0
+    }
 
-        stringRedisTemplate.scan(scanOptions)
+    companion object {
+        const val PRODUCT_KEY = "product"
     }
 }
